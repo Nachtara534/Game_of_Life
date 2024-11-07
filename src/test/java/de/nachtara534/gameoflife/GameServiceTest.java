@@ -2,6 +2,8 @@ package de.nachtara534.gameoflife;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -103,5 +105,12 @@ public class GameServiceTest {
         //Then
         assertThat(CellThatShouldNowLive.getStatusCurrentStep()).isEqualTo(CellState.ALIVE);
         assertThat(CellThatShouldNowLive.getStatusNextStep()).isEqualTo(CellState.DEAD);
+    }
+
+    @Test
+    void test_play() {
+        List<Position> startingPositions = List.of(new Position(0, 1), new Position(1, 1), new Position(2, 1));
+
+        gameService.play(startingPositions);
     }
 }

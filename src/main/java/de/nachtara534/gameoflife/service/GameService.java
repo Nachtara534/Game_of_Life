@@ -1,7 +1,9 @@
 package de.nachtara534.gameoflife.service;
 
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.nachtara534.gameoflife.domain.Board;
@@ -11,6 +13,40 @@ import de.nachtara534.gameoflife.domain.Position;
 
 @Service
 public class GameService {
+
+    @Autowired
+    private OutputService outputService;
+
+    public void play(List<Position> startingCells) {
+        Board board = new Board();
+
+        for (Position currentPosition : startingCells) {
+            Cell currentCell = generateCells(currentPosition, CellState.ALIVE, board);
+            generateNeighbours(currentCell, board);
+        }
+
+        outputService.printBoard(board);
+
+        while (livingCellsRemaining(board)) {
+            checkNextGeneration(board);
+            changeToNextGeneration(board);
+
+            outputService.printBoard(board);
+
+        }
+    }
+
+    public boolean livingCellsRemaining(Board board) {
+        Set<Position> allCells = board.getBoard().keySet();
+
+        for (Position currentKey : allCells) {
+            if (board.getBoard().get(currentKey).isLivingNeighbour()
+                    || board.getBoard().get(currentKey).getStatusCurrentStep() == CellState.ALIVE) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Cell generateCells(Position position, CellState isAlive, Board board) {
         Cell cell = new Cell(position, isAlive);
@@ -76,6 +112,9 @@ public class GameService {
             if (currentCell.getStatusNextStep() == CellState.ALIVE) {
                 currentCell.setStatusNextStep(CellState.DEAD);
                 currentCell.setStatusCurrentStep(CellState.ALIVE);
+
+                generateNeighbours(currentCell, board);
+
             }
         }
     }
