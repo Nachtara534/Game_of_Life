@@ -67,6 +67,17 @@ public class GameService {
                 cell.setStatusNextStep(CellState.ALIVE);
             }
         }
-
     }
+
+    public void changeToNextGeneration(final Board board) {
+        Set<Position> allCells = board.getBoard().keySet();
+        for (Position position : allCells) {
+            Cell currentCell = board.getBoard().get(position);
+            if (currentCell.getStatusNextStep() == CellState.ALIVE) {
+                currentCell.setStatusNextStep(CellState.DEAD);
+                currentCell.setStatusCurrentStep(CellState.ALIVE);
+            }
+        }
+    }
+
 }

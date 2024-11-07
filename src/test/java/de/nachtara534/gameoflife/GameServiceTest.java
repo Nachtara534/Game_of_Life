@@ -58,8 +58,50 @@ public class GameServiceTest {
         board.addCell(initCell);
         gameService.generateNeighbours(new Cell(position, CellState.ALIVE), board);
 
-        gameService.checkNextGeneration(board);
-        assertThat(board.getBoard().get(position).getStatusNextStep()).isEqualTo(CellState.DEAD);
+        int livingNeighbours = gameService.countSurroundingLivingNeighbours(new Cell(new Position(0, 1), CellState.DEAD), board);
+        assertThat(livingNeighbours).isEqualTo(1);
+    }
 
+    @Test
+    void test_CheckMinMax() {
+        Position position = new Position(0, 0);
+        Board board = new Board();
+        Cell initCell = new Cell(position, CellState.ALIVE);
+        board.addCell(initCell);
+        gameService.generateNeighbours(new Cell(position, CellState.ALIVE), board);
+
+        assertThat(board.getMaxY()).isEqualTo(1);
+        assertThat(board.getMinY()).isEqualTo(-1);
+
+        assertThat(board.getMaxX()).isEqualTo(1);
+        assertThat(board.getMinX()).isEqualTo(-1);
+    }
+
+    @Test
+    void test_nextGeneration() {
+
+        //Given
+        Position position1 = new Position(0, 0);
+        Position position2 = new Position(2, 0);
+        Board board = new Board();
+
+        Cell initCell1 = new Cell(position1, CellState.ALIVE);
+        Cell initCell2 = new Cell(position2, CellState.ALIVE);
+
+        //When
+        board.addCell(initCell1);
+        board.addCell(initCell2);
+
+        gameService.generateNeighbours(initCell1, board);
+        gameService.generateNeighbours(initCell2, board);
+
+        gameService.checkNextGeneration(board);
+        Cell CellThatShouldNowLive = board.getBoard().get(new Position(1, 0));
+        assertThat(CellThatShouldNowLive.getStatusCurrentStep()).isEqualTo(CellState.DEAD);
+        gameService.changeToNextGeneration(board);
+
+        //Then
+        assertThat(CellThatShouldNowLive.getStatusCurrentStep()).isEqualTo(CellState.ALIVE);
+        assertThat(CellThatShouldNowLive.getStatusNextStep()).isEqualTo(CellState.DEAD);
     }
 }

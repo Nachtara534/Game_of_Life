@@ -27,7 +27,14 @@ public class Board {
 
     //Start zellen erzeugen + nachbar felder generieren(tod), nicht random,
 
-    public void addCell(final Cell cell){
+    public void addCell(final Cell cell) {
         this.board.put(cell.ownPosition, cell);
+
+        Position temp = cell.ownPosition;
+        minY = Math.min(temp.getY(), minY);
+        maxY = Math.max(temp.getY(), maxY);
+
+        minX = Math.min(temp.getX(), minX);
+        maxX = Math.max(temp.getX(), maxX);
     }
 }
