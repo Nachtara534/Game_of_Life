@@ -48,4 +48,18 @@ public class GameServiceTest {
                 .filter(cell -> cell.getStatusCurrentStep().equals(CellState.ALIVE))
                 .count()).isEqualTo(maxNumbersOfALiveCellInHashMap);
     }
+
+    @Test
+    void test_checkNextGeneration() {
+        Position position = new Position(0, 0);
+        Board board = new Board();
+        Cell initCell = new Cell(position, CellState.ALIVE);
+
+        board.addCell(initCell);
+        gameService.generateNeighbours(new Cell(position, CellState.ALIVE), board);
+
+        gameService.checkNextGeneration(board);
+        assertThat(board.getBoard().get(position).getStatusNextStep()).isEqualTo(CellState.DEAD);
+
+    }
 }
