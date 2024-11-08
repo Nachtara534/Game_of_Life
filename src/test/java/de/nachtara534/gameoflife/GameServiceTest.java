@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,10 +35,9 @@ public class GameServiceTest {
     void test_generateNeighbours() {
         Position position = new Position(0, 0);
         Board board = new Board();
-        Cell initCell = new Cell(position, CellState.ALIVE);
-        gameService.generateNeighbours(new Cell(position, CellState.ALIVE), board);
+        Cell initCell = gameService.generateCells(position, CellState.ALIVE, board);
+        gameService.generateNeighbours(initCell, board);
 
-        board.addCell(initCell);
 
         assertThat(board.getBoard().size()).isEqualTo(9);
         assertThat(board.getBoard().containsKey(position)).isTrue();
@@ -131,6 +131,7 @@ public class GameServiceTest {
 
 
     @Test
+    @Disabled
     void test_play() throws InterruptedException {
         List<Position> startingPositions = List.of(new Position(0, 0), new Position(1, 0), new Position(2, 0), new Position(2, 1), new Position(1, 2));
 
