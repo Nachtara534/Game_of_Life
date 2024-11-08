@@ -42,7 +42,7 @@ public class GameService {
         Set<Position> allCells = board.getBoard().keySet();
 
         for (Position currentKey : allCells) {
-            if (board.getBoard().get(currentKey).isLivingNeighbour()
+            if (board.getBoard().get(currentKey).isHasLivingNeighbour()
                     || board.getBoard().get(currentKey).getStatusCurrentStep() == CellState.ALIVE) {
                 return true;
             }
@@ -65,7 +65,7 @@ public class GameService {
                 Position currentPosition = new Position(x, y);
                 if (!board.getBoard().containsKey(currentPosition)) {
                     Cell neighhbourCell = new Cell(currentPosition, CellState.DEAD);
-                    neighhbourCell.setLivingNeighbour(true);
+                    neighhbourCell.setHasLivingNeighbour(true);
                     board.addCell(neighhbourCell);
                 }
 
@@ -79,10 +79,16 @@ public class GameService {
         for (int x = cell.getOwnPosition().getX() - 1; x <= cell.getOwnPosition().getX() + 1; x++) {
             for (int y = cell.getOwnPosition().getY() - 1; y <= cell.getOwnPosition().getY() + 1; y++) {
                 Position currentPosition = new Position(x, y);
-                if (board.getBoard().containsKey(currentPosition)
-                        && board.getBoard().get(currentPosition).getStatusCurrentStep() == CellState.ALIVE) {
+
+                boolean isNeighbor = board.getBoard().containsKey(currentPosition)
+                        && !cell.getOwnPosition().equals(currentPosition);
+                boolean isAlive =
+                        isNeighbor && board.getBoard().get(currentPosition).getStatusCurrentStep() == CellState.ALIVE;
+
+                if (isAlive) {
                     livingNeighbours++;
                 }
+
             }
 
         }

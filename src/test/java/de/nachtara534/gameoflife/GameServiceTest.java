@@ -106,9 +106,32 @@ public class GameServiceTest {
     }
 
     @Test
+    void test_LivingNeighbours() {
+        Position position1 = new Position(0, 0);
+        Position position2 = new Position(1, 0);
+        Position position3 = new Position(2, 0);
+
+        Board board = new Board();
+
+        Cell cell1 = gameService.generateCells(position1, CellState.ALIVE, board);
+        Cell cell2 = gameService.generateCells(position2, CellState.ALIVE, board);
+        Cell cell3 = gameService.generateCells(position3, CellState.ALIVE, board);
+
+        gameService.generateNeighbours(cell1, board);
+        gameService.generateNeighbours(cell2, board);
+        gameService.generateNeighbours(cell3, board);
+
+        gameService.checkNextGeneration(board);
+
+        assertThat(gameService.countSurroundingLivingNeighbours(cell1, board)).isEqualTo(1);
+        assertThat(gameService.countSurroundingLivingNeighbours(cell2, board)).isEqualTo(2);
+    }
+
+
+    @Test
     @Disabled
     void test_play() throws InterruptedException {
-        List<Position> startingPositions = List.of(new Position(0, 1), new Position(1, 1), new Position(2, 1));
+        List<Position> startingPositions = List.of(new Position(0, 0), new Position(1, 0), new Position(2, 0));
 
         gameService.play(startingPositions);
     }

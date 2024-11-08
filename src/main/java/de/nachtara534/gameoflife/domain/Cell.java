@@ -17,7 +17,7 @@ public class Cell {
 
     CellState statusCurrentStep;
 
-    boolean livingNeighbour;
+    boolean hasLivingNeighbour;
 
     CellState statusNextStep;
 
