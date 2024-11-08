@@ -80,8 +80,8 @@ public class GameService {
             for (int y = cell.getOwnPosition().getY() - 1; y <= cell.getOwnPosition().getY() + 1; y++) {
                 Position currentPosition = new Position(x, y);
 
-                boolean isNeighbor = board.getBoard().containsKey(currentPosition)
-                        && !cell.getOwnPosition().equals(currentPosition);
+                boolean isNeighbor =
+                        board.getBoard().containsKey(currentPosition) && !currentPosition.equals(cell.getOwnPosition());
                 boolean isAlive =
                         isNeighbor && board.getBoard().get(currentPosition).getStatusCurrentStep() == CellState.ALIVE;
 
@@ -104,13 +104,13 @@ public class GameService {
 
             int livingNeighbours = countSurroundingLivingNeighbours(cell, board);
 
+
             if (cell.getStatusCurrentStep() == CellState.ALIVE) {
                 cell.setStatusNextStep((livingNeighbours == 2
-                        || livingNeighbours == 3) ? CellState.ALIVE : CellState.DEAD);
+                        || livingNeighbours == 3) ? cell.getStatusCurrentStep() : CellState.DEAD);
             } else {
                 cell.setStatusNextStep(livingNeighbours == 3 ? CellState.ALIVE : CellState.DEAD);
             }
-
         }
     }
 
@@ -119,14 +119,13 @@ public class GameService {
 
         for (Position position : allCells) {
             Cell currentCell = board.getBoard().get(position);
-            if (currentCell.getStatusNextStep() == CellState.ALIVE) {
-                currentCell.setStatusNextStep(CellState.DEAD);
-                currentCell.setStatusCurrentStep(CellState.ALIVE);
 
-                generateNeighbours(currentCell, board);
+            currentCell.setStatusCurrentStep(currentCell.getStatusNextStep());
 
-            }
+
+            generateNeighbours(currentCell, board);
+
         }
     }
-
 }
+
