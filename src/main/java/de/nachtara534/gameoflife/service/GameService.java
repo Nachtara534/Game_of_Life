@@ -63,8 +63,10 @@ public class GameService {
         for (int x = cell.getOwnPosition().getX() - 1; x <= cell.getOwnPosition().getX() + 1; x++) {
             for (int y = cell.getOwnPosition().getY() - 1; y <= cell.getOwnPosition().getY() + 1; y++) {
                 Position currentPosition = new Position(x, y);
-                if (!board.getBoard().containsKey(currentPosition)) {
+                if (!board.getBoard().containsKey(currentPosition)
+                        && countSurroundingLivingNeighbours(new Cell(currentPosition, CellState.DEAD), board) >= 1) {
                     Cell neighhbourCell = new Cell(currentPosition, CellState.DEAD);
+
                     neighhbourCell.setHasLivingNeighbour(true);
                     board.addCell(neighhbourCell);
                 }
