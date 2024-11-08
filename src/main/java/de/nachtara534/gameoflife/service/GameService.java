@@ -1,5 +1,6 @@
 package de.nachtara534.gameoflife.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class GameService {
     @Autowired
     private OutputService outputService;
 
-    public void play(List<Position> startingCells) {
+    public void play(List<Position> startingCells) throws InterruptedException {
         Board board = new Board();
 
         for (Position currentPosition : startingCells) {
@@ -33,6 +34,7 @@ public class GameService {
 
             outputService.printBoard(board);
 
+            Thread.sleep(1000);
         }
     }
 
@@ -96,17 +98,19 @@ public class GameService {
 
             int livingNeighbours = countSurroundingLivingNeighbours(cell, board);
 
-            if (livingNeighbours < 2
-                    || livingNeighbours > 3) {
-                cell.setStatusNextStep(CellState.DEAD);
+            if (cell.getStatusCurrentStep() == CellState.ALIVE) {
+                cell.setStatusNextStep((livingNeighbours == 2
+                        || livingNeighbours == 3) ? CellState.ALIVE : CellState.DEAD);
             } else {
-                cell.setStatusNextStep(CellState.ALIVE);
+                cell.setStatusNextStep(livingNeighbours == 3 ? CellState.ALIVE : CellState.DEAD);
             }
+
         }
     }
 
     public void changeToNextGeneration(final Board board) {
-        Set<Position> allCells = board.getBoard().keySet();
+        Set<Position> allCells = new HashSet<>(board.getBoard().keySet());
+
         for (Position position : allCells) {
             Cell currentCell = board.getBoard().get(position);
             if (currentCell.getStatusNextStep() == CellState.ALIVE) {

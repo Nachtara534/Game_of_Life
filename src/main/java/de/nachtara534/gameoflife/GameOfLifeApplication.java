@@ -14,7 +14,7 @@ import de.nachtara534.gameoflife.service.OutputService;
 public class GameOfLifeApplication {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(GameOfLifeApplication.class, args);
 
         GameService gameService = new GameService();

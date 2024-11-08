@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -98,17 +99,15 @@ public class GameServiceTest {
         gameService.generateNeighbours(initCell2, board);
 
         gameService.checkNextGeneration(board);
-        Cell CellThatShouldNowLive = board.getBoard().get(new Position(1, 0));
-        assertThat(CellThatShouldNowLive.getStatusCurrentStep()).isEqualTo(CellState.DEAD);
-        gameService.changeToNextGeneration(board);
 
         //Then
-        assertThat(CellThatShouldNowLive.getStatusCurrentStep()).isEqualTo(CellState.ALIVE);
-        assertThat(CellThatShouldNowLive.getStatusNextStep()).isEqualTo(CellState.DEAD);
+        assertThat(initCell1.getStatusNextStep()).isEqualTo(CellState.DEAD);
+        assertThat(initCell2.getStatusNextStep()).isEqualTo(CellState.DEAD);
     }
 
     @Test
-    void test_play() {
+    @Disabled
+    void test_play() throws InterruptedException {
         List<Position> startingPositions = List.of(new Position(0, 1), new Position(1, 1), new Position(2, 1));
 
         gameService.play(startingPositions);

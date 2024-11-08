@@ -26,6 +26,10 @@ public class OutputService {
             }
             System.out.println(); // Zeilenumbruch nach jeder Reihe
         }
+        for (int x = board.getMinX(); x <= board.getMaxX(); x++) {
+            System.out.print("----");
+        }
+        System.out.println();
     }
 
 }
