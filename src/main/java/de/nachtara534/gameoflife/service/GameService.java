@@ -34,7 +34,7 @@ public class GameService {
 
             outputService.printBoard(board);
 
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
     }
 

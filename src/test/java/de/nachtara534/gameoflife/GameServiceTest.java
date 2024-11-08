@@ -132,7 +132,7 @@ public class GameServiceTest {
 
     @Test
     void test_play() throws InterruptedException {
-        List<Position> startingPositions = List.of(new Position(0, 0), new Position(-1, 0), new Position(1, 0));
+        List<Position> startingPositions = List.of(new Position(0, 0), new Position(1, 0), new Position(2, 0), new Position(2, 1), new Position(1, 2));
 
         gameService.play(startingPositions);
     }
