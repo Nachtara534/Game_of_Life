@@ -25,10 +25,21 @@ public class GameOfLifeApplication {
             List<Position> startingPositions = List.of(
                     new Position(1, 0),
                     new Position(0, 0),
-                    new Position(-1, 0)
+                    new Position(-1, 0),
+                    new Position(1, 1),
+                    new Position(3, 2),
+                    new Position(7, 4),
+                    new Position(4, -2),
+                    new Position(-3, 6),
+                    new Position(-3, -2),
+                    new Position(3, 2),
+                    new Position(1, 2),
+                    new Position(4, 2),
+                    new Position(-2, 1),
+                    new Position(-2, 0),
+                    new Position(-2, 2)
             );
 
-            // Aufruf der play-Methode im GameService mit den Startzellen
             gameService.play(startingPositions);
         };
     }

@@ -28,12 +28,15 @@ public class GameService {
 
         outputService.printBoard(board);
 
-        while (livingCellsRemaining(board)) {
+        boolean livingCellAreStillRemaining = livingCellsRemaining(board);
+
+        while (livingCellAreStillRemaining) {
             checkNextGeneration(board);
             changeToNextGeneration(board);
 
             outputService.printBoard(board);
 
+            livingCellAreStillRemaining = livingCellsRemaining(board);
             Thread.sleep(500);
         }
     }
@@ -112,6 +115,10 @@ public class GameService {
                         || livingNeighbours == 3) ? cell.getStatusCurrentStep() : CellState.DEAD);
             } else {
                 cell.setStatusNextStep(livingNeighbours == 3 ? CellState.ALIVE : CellState.DEAD);
+            }
+
+            if (livingNeighbours == 0) {
+                cell.setHasLivingNeighbour(false);
             }
         }
     }
